@@ -76,12 +76,14 @@ impl Converter {
     /// # Arguments
     /// 
     /// * `source` - A PathBuf representing the target .CR2 image to convert
-    fn imagepipe(&self) -> Result<(), &'static str> {
+    fn imagepipe(&self, source: &PathBuf) -> Result<(), &'static str> {
 
-        let file = "./src/sample1.cr2";
-        let filejpg = "./src/output_pipeline.jpg";
+        let file = source.as_os_str().to_str().unwrap();
+        let stem = source.file_stem().unwrap();
+        let target = format!("{}/{}.jpg", self.destination.as_str(), stem.to_str().unwrap());
 
-        println!("Loading file \"{}\" and saving it as \"{}\"", file, filejpg);
+
+        println!("Loading file \"{}\" and saving it as \"{}\"", file, target);
 
         let image = rawloader::decode_file(file);
 
@@ -95,7 +97,7 @@ impl Converter {
             return Err("Could not decode file...");
         }
 
-        let uf =  File::create(filejpg);
+        let uf =  File::create(target);
 
         if uf.is_err() {
             return Err("Could not create JPG file...");
@@ -146,7 +148,7 @@ impl Converter {
             Ok(_) => Ok(()),
             Err(_) => {
                 println!("Could not convert image with magick, trying pipeline library...");
-                return match self.imagepipe() {
+                return match self.imagepipe(source) {
                     Ok(_) => Ok(()),
                     Err(_) => Err("Could not convert image")
                 }
