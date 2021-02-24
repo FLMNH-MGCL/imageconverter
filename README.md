@@ -6,7 +6,7 @@ Given starting and destination paths, the program will collect and convert .CR2 
 
 ### Installation and Usage
 
-Be sure to install [Rust](https://www.rust-lang.org/) and [ImageMagick](https://imagemagick.org/index.php) on your system.
+Be sure to install [Rust](https://www.rust-lang.org/) and [ImageMagick](https://imagemagick.org/index.php) on your system. When installing ImageMagick on a Windows computer, please ensure you check the checkbox "Install development headers and libraries for C and C++".
 
 You may run the program with cargo:
 
